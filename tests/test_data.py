@@ -1,9 +1,5 @@
 import pytest
 
-from dotenv import load_dotenv
-
-load_dotenv(".env.example")
-
 from bots.settings import TOKEN_ADDRESS  # noqa
 from bots.data import Token, Price, LiquidityPool, LiquidityPoolEpoch  # noqa
 
