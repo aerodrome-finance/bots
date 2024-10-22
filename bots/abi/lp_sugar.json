@@ -5,8 +5,9 @@
     "inputs": [
       { "name": "_voter", "type": "address" },
       { "name": "_registry", "type": "address" },
-      { "name": "_nfpm", "type": "address" },
-      { "name": "_slipstream_helper", "type": "address" }
+      { "name": "_convertor", "type": "address" },
+      { "name": "_slipstream_helper", "type": "address" },
+      { "name": "_alm_factory", "type": "address" }
     ],
     "outputs": []
   },
@@ -94,7 +95,9 @@
           { "name": "pool_fee", "type": "uint256" },
           { "name": "unstaked_fee", "type": "uint256" },
           { "name": "token0_fees", "type": "uint256" },
-          { "name": "token1_fees", "type": "uint256" }
+          { "name": "token1_fees", "type": "uint256" },
+          { "name": "nfpm", "type": "address" },
+          { "name": "alm", "type": "address" }
         ]
       }
     ]
@@ -133,7 +136,9 @@
           { "name": "pool_fee", "type": "uint256" },
           { "name": "unstaked_fee", "type": "uint256" },
           { "name": "token0_fees", "type": "uint256" },
-          { "name": "token1_fees", "type": "uint256" }
+          { "name": "token1_fees", "type": "uint256" },
+          { "name": "nfpm", "type": "address" },
+          { "name": "alm", "type": "address" }
         ]
       }
     ]
@@ -166,7 +171,43 @@
           { "name": "tick_lower", "type": "int24" },
           { "name": "tick_upper", "type": "int24" },
           { "name": "sqrt_ratio_lower", "type": "uint160" },
-          { "name": "sqrt_ratio_upper", "type": "uint160" }
+          { "name": "sqrt_ratio_upper", "type": "uint160" },
+          { "name": "alm", "type": "address" }
+        ]
+      }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "positionsByFactory",
+    "inputs": [
+      { "name": "_limit", "type": "uint256" },
+      { "name": "_offset", "type": "uint256" },
+      { "name": "_account", "type": "address" },
+      { "name": "_factory", "type": "address" }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple[]",
+        "components": [
+          { "name": "id", "type": "uint256" },
+          { "name": "lp", "type": "address" },
+          { "name": "liquidity", "type": "uint256" },
+          { "name": "staked", "type": "uint256" },
+          { "name": "amount0", "type": "uint256" },
+          { "name": "amount1", "type": "uint256" },
+          { "name": "staked0", "type": "uint256" },
+          { "name": "staked1", "type": "uint256" },
+          { "name": "unstaked_earned0", "type": "uint256" },
+          { "name": "unstaked_earned1", "type": "uint256" },
+          { "name": "emissions_earned", "type": "uint256" },
+          { "name": "tick_lower", "type": "int24" },
+          { "name": "tick_upper", "type": "int24" },
+          { "name": "sqrt_ratio_lower", "type": "uint160" },
+          { "name": "sqrt_ratio_upper", "type": "uint160" },
+          { "name": "alm", "type": "address" }
         ]
       }
     ]
@@ -296,6 +337,69 @@
   {
     "stateMutability": "view",
     "type": "function",
+    "name": "MAX_FACTORIES",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "MAX_POOLS",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "MAX_ITERATIONS",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "MAX_TOKENS",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "MAX_LPS",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "MAX_EPOCHS",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "MAX_REWARDS",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "MAX_POSITIONS",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "WEEK",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
     "name": "registry",
     "inputs": [],
     "outputs": [{ "name": "", "type": "address" }]
@@ -310,7 +414,7 @@
   {
     "stateMutability": "view",
     "type": "function",
-    "name": "nfpm",
+    "name": "convertor",
     "inputs": [],
     "outputs": [{ "name": "", "type": "address" }]
   },
@@ -318,6 +422,13 @@
     "stateMutability": "view",
     "type": "function",
     "name": "cl_helper",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "alm_factory",
     "inputs": [],
     "outputs": [{ "name": "", "type": "address" }]
   }

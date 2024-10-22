@@ -233,6 +233,8 @@ class LiquidityPool:
     emissions: Amount
     emissions_token: Token
     weekly_emissions: Amount
+    nfpm: str
+    alm: str
 
     @classmethod
     def from_tuple(
@@ -272,7 +274,9 @@ class LiquidityPool:
         # { "name": "pool_fee", "type": "uint256" },        <== 21
         # { "name": "unstaked_fee", "type": "uint256" },    <== 22
         # { "name": "token0_fees", "type": "uint256" },     <== 23
-        # { "name": "token1_fees", "type": "uint256" }     <== 24
+        # { "name": "token1_fees", "type": "uint256" },    <== 24
+        # { "name": "nfpm", "type": "address" },           <== 25
+        # { "name": "alm", "type": "address" }             <== 26
 
         return LiquidityPool(
             lp=normalize_address(t[0]),
@@ -294,6 +298,8 @@ class LiquidityPool:
             weekly_emissions=Amount.build(
                 emissions_token, emissions * seconds_in_a_week, tokens, prices
             ),
+            nfpm=normalize_address(t[25]),
+            alm=normalize_address(t[26]),
         )
 
     @classmethod
