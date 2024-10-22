@@ -19,7 +19,7 @@
 ## Pre reqs
 
 - [Sugar](https://github.com/velodrome-finance/sugar)
-- [Oracle](https://github.com/velodrome-finance/oracle)
+- [Oracle, Velodrome Release](https://github.com/1inch/spot-price-aggregator)
 - [Poetry](https://python-poetry.org/)
 - [Nox](https://nox.thea.codes/en/stable/)
 

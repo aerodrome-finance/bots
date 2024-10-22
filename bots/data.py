@@ -20,6 +20,7 @@ from .settings import (
     PRICE_BATCH_SIZE,
     GOOD_ENOUGH_PAGINATION_LIMIT,
     POOL_PAGE_SIZE,
+    PRICE_THRESHOLD_FILTER,
 )
 from .helpers import cache_in_seconds, normalize_address, chunk
 
@@ -133,26 +134,32 @@ class Price:
     @classmethod
     @cache_in_seconds(ORACLE_PRICES_CACHE_MINUTES * 60)
     async def _get_prices(
-        cls, tokens: Tuple[Token], stable_token: str, connector_tokens: Tuple[str]
+        cls,
+        tokens: Tuple[Token],
+        stable_token: str,
+        connector_tokens: Tuple[str],
+        base_rate: float,
     ):
         price_oracle = w3.eth.contract(
             address=PRICE_ORACLE_ADDRESS, abi=PRICE_ORACLE_ABI
         )
-        pricing_token_list = (
-            list(map(lambda t: t.token_address, tokens))
-            + list(connector_tokens)
-            + [stable_token]
-        )
-        prices = await price_oracle.functions.getManyRatesWithConnectors(
-            len(tokens), pricing_token_list
+        token_list = list(map(lambda t: t.token_address, tokens))
+        prices = await price_oracle.functions.getManyRatesToEthWithCustomConnectors(
+            token_list,
+            False,
+            token_list + list(connector_tokens) + [stable_token],
+            PRICE_THRESHOLD_FILTER,
         ).call()
 
         results = []
 
         for cnt, price in enumerate(prices):
-            # XX: decimals are auto set to 18, see
-            # https://github.com/velodrome-finance/oracle/blob/main/contracts/VeloOracle.sol#L126
-            results.append(Price(token=tokens[cnt], price=price / 10**18))
+            token = tokens[cnt]
+            # XX: decimals are auto set to 18
+            denom = 10 ** (18 + (18 - token.decimals))
+
+            conv_price = (price / denom) / base_rate
+            results.append(Price(token=token, price=conv_price))
 
         return results
 
@@ -175,6 +182,18 @@ class Price:
         Returns:
             List: list of Price objects
         """
+        stable = await Token.get_by_token_address(STABLE_TOKEN_ADDRESS)
+        [base_price] = await cls._get_prices(
+            tuple([stable]),
+            stable_token,
+            tuple(connector_tokens),
+            # base rate is 1, since we don't want any conversion applied
+            1,
+        )
+
+        # assume the pricing is wrong if the base price failed
+        base_rate = 0 if base_price is None else base_price.price
+
         batches = await asyncio.gather(
             *map(
                 lambda ts: cls._get_prices(
@@ -182,6 +201,7 @@ class Price:
                     tuple(ts),
                     stable_token,
                     tuple(connector_tokens),
+                    base_rate,
                 ),
                 list(chunk(tokens, PRICE_BATCH_SIZE)),
             )

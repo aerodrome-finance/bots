@@ -1,30 +1,34 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_factoryV2", "type": "address" }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "factoryV2",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint8", "name": "src_len", "type": "uint8" },
       {
-        "internalType": "contract IERC20Metadata[]",
-        "name": "connectors",
+        "internalType": "contract IERC20[]",
+        "name": "srcTokens",
         "type": "address[]"
+      },
+      {
+        "internalType": "bool",
+        "name": "useWrappers",
+        "type": "bool"
+      },
+      {
+        "internalType": "contract IERC20[]",
+        "name": "customConnectors",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "thresholdFilter",
+        "type": "uint256"
       }
     ],
-    "name": "getManyRatesWithConnectors",
+    "name": "getManyRatesToEthWithCustomConnectors",
     "outputs": [
-      { "internalType": "uint256[]", "name": "rates", "type": "uint256[]" }
+      {
+        "internalType": "uint256[]",
+        "name": "weightedRates",
+        "type": "uint256[]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"

@@ -25,6 +25,7 @@ LP_SUGAR_ADDRESS = os.environ["LP_SUGAR_ADDRESS"]
 PRICE_ORACLE_ADDRESS = os.environ["PRICE_ORACLE_ADDRESS"]
 # when pricing a bunch of tokens, we batch the full list into smaller chunks
 PRICE_BATCH_SIZE = int(os.environ["PRICE_BATCH_SIZE"])
+PRICE_THRESHOLD_FILTER = int(os.getenv("PRICE_THRESHOLD_FILTER", 10))
 
 # protocol we are dealing with: Velodrome | Aerodrome
 PROTOCOL_NAME = os.environ["PROTOCOL_NAME"]
