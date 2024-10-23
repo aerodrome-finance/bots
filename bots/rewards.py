@@ -2,7 +2,7 @@ from discord.ext import tasks
 
 from .settings import BOT_TICKER_INTERVAL_MINUTES
 from .data import LiquidityPoolEpoch
-from .helpers import LOGGER, amount_to_k_string, amount_to_m_string
+from .helpers import LOGGER, amount_to_string
 from .ticker import TickerBot
 
 
@@ -26,10 +26,10 @@ class RewardsBot(TickerBot):
             bribes = sum(map(lambda lpe: lpe.total_bribes, lpes))
 
             await self.update_nick_for_all_servers(
-                f"Rewards ~${amount_to_m_string(fees + bribes)}"
+                f"Rewards ~${amount_to_string(fees + bribes)}"
             )
             await self.update_presence(
-                f"~${amount_to_k_string(fees)} + ~${amount_to_k_string(bribes)} in fees & incentives for voters"  # noqa
+                f"~${amount_to_string(fees)} + ~${amount_to_string(bribes)} in fees & incentives for voters"  # noqa
             )
         except Exception as ex:
             LOGGER.error(f"Ticker failed with {ex}")

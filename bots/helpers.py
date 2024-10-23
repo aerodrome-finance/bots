@@ -54,6 +54,14 @@ def amount_to_m_string(amount: float) -> str:
     return f"{round(amount/1000000, 2)}M"
 
 
+def amount_to_string(amount: float) -> str:
+    """Turns a large amount into a friendlier format"""
+    if amount >= 1_000_000:
+        return amount_to_m_string(amount)
+
+    return amount_to_k_string(amount)
+
+
 def make_app_url(base_url: str, path: str, params: Dict) -> str:
     return f"{base_url}{path}?{urllib.parse.urlencode(params)}"
 

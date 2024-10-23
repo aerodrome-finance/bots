@@ -2,7 +2,7 @@ from discord.ext import tasks
 
 from .settings import BOT_TICKER_INTERVAL_MINUTES
 from .data import LiquidityPool
-from .helpers import LOGGER, amount_to_m_string
+from .helpers import LOGGER, amount_to_string
 from .ticker import TickerBot
 
 
@@ -24,7 +24,7 @@ class FeesBot(TickerBot):
             pools = await LiquidityPool.get_pools()
             fees = sum(map(lambda p: p.total_fees, pools))
 
-            await self.update_nick_for_all_servers(f"Fees ~${amount_to_m_string(fees)}")
+            await self.update_nick_for_all_servers(f"Fees ~${amount_to_string(fees)}")
             await self.update_presence(f"Based on {len(pools)} pools this epoch")
         except Exception as ex:
             LOGGER.error(f"Ticker failed with {ex}")
